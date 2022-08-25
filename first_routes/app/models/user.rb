@@ -23,5 +23,6 @@ class User < ApplicationRecord
     has_many :artworks_share,
         foreign_key: :artwork_id,
         class_name: :ArtworkShare,
-        dependent: :destroy
+        dependent: :destroy,
+        inverse_of: :artworks
 end

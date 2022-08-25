@@ -15,7 +15,8 @@ class Artwork < ApplicationRecord
 
     belongs_to :artist,
         foreign_key: :artist_id,
-        class_name: :User
+        class_name: :User,
+        inverse_of: :artworks
 
     has_many :artworks_share,
         foreign_key: :viewer_id,
@@ -26,9 +27,19 @@ class Artwork < ApplicationRecord
         through: :artworks_share,
         source: :viewer
 
-        def self.artworks_for_user_id(user_id)
-            Artwork.select(*).joins(:users).where("artwork_shares.viewer_id = artist_id")
-        end
+    def self.artworks_for_user_id(user_id)
+        viewed_art = self
+            .select(:title, :artist_id, :viewer_id)
+            .joins(:shared_viewers)
+            .where("artwork_shares.viewer_id = (?)", user_id)
+
+        user_art = self
+            .select(:title, :artist_id)
+            .where(artist_id: user_id)
+        debugger
+        viewed_art.to_a + user_art.to_a
         
+    end
+    
         
 end
