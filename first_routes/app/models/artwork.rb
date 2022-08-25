@@ -36,7 +36,6 @@ class Artwork < ApplicationRecord
         user_art = self
             .select(:title, :artist_id)
             .where(artist_id: user_id)
-        debugger
         viewed_art.to_a + user_art.to_a
         
     end
