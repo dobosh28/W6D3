@@ -1,3 +1,5 @@
+require "byebug"
+
 class ArtworksController < ApplicationController
     def index
         @artworks = Artwork.all
@@ -23,7 +25,7 @@ class ArtworksController < ApplicationController
         @artwork = Artwork.find(params[:id])
 
         if @artwork.update(artwork_params)
-            render json: @artwork, status: :updated
+            render json: @artwork
         else
             render json: @artwork.errors.full_messages, status: :unprocessable_entity
         end
@@ -38,7 +40,6 @@ class ArtworksController < ApplicationController
     private
 
     def artwork_params
-        params.require(:artist_id).permit(:title, :image_url)
+        params.require(:artworks).permit(:title, :image_url, :artist_id)
     end
-
 end

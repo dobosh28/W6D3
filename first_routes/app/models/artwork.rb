@@ -10,8 +10,8 @@
 #  updated_at :datetime         not null
 #
 class Artwork < ApplicationRecord
-    validates :image_url, :title, presence: true, uniqueness: true
-    validates :artist_id, uniqueness: true
+    validates :image_url, :artist_id, presence: true, uniqueness: true
+    validates :title, presence: true, uniqueness: {scope: :artist_id}
 
     belongs_to :artist,
         foreign_key: :artist_id,
@@ -25,5 +25,4 @@ class Artwork < ApplicationRecord
     has_many :shared_viewers,
         through: :artworks_share,
         source: :viewer
-
 end
